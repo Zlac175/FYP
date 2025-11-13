@@ -1,0 +1,4 @@
+name = "Chess PoC (All Python)"
+packages = ["python-chess"]
+# interpreter = "0.23.4"
+# experimental_create_proxy = "auto"

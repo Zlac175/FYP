@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chess PoC — All Python</title>
+  <link
+  rel="stylesheet"
+  href="https://pyscript.net/releases/2025.8.1/core.css"
+  />
+  <script
+    type="module"
+    src="https://pyscript.net/releases/2025.8.1/core.js"
+  ></script>
+  <style>
+    :root { --cell: 64px; --light: #e6d8b5; --dark: #8b6f47; --accent: #f7d34b; --ring: #00c2d7; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; background: #f1f5f9; margin: 0; }
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .row { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+    .board { width: calc(var(--cell) * 8); height: calc(var(--cell) * 8);
+             display: grid; grid-template-columns: repeat(8, var(--cell)); grid-template-rows: repeat(8, var(--cell));
+             border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .sq { display:flex; align-items:center; justify-content:center; position: relative; font-size: 34px; border: 0; }
+    .light { background: var(--light); }
+    .dark { background: var(--dark); color: #fff; }
+    .coord { position: absolute; font-size: 10px; opacity: .65; }
+    .file { right: 4px; bottom: 4px; }
+    .rank { left: 4px; top: 4px; }
+    .target::after { content: ""; width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,.25); position: absolute; }
+    .last { outline: 3px solid var(--accent); }
+    .selected { box-shadow: inset 0 0 0 4px var(--ring); }
+    .panel { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .btn { padding: 8px 12px; border-radius: 999px; border: 0; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer; }
+    .btn:hover { background: #f8fafc; }
+    .stack { display:flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .muted { color: #475569; font-size: 14px; }
+    @media (max-width: 960px){ .row{ grid-template-columns: 1fr; } .board{ margin: 0 auto; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Chess PoC — All Python</h1>
+    <p class="muted">Backend: FastAPI · Frontend: PyScript · Rules: python-chess · Real-time: WebSocket</p>
+    <div class="row">
+      <div>
+        <div id="board" class="board" aria-label="Chess board"></div>
+        <div class="stack">
+          <button id="flip" class="btn">Flip board</button>
+          <button id="new" class="btn">New game</button>
+        </div>
+        <div id="gameover" class="panel" style="margin-top:12px; display:none;"></div>
+      </div>
+      <div class="panel">
+        <h2>Status</h2>
+        <div class="muted">WS: <span id="ws-status">connecting…</span></div>
+        <div class="muted">Game ID: <code id="gid">demo</code></div>
+        <div class="muted">Turn: <span id="turn">—</span></div>
+        <details style="margin-top:12px;">
+          <summary>FEN</summary>
+          <pre id="fen" style="white-space:pre-wrap;">—</pre>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load your PyScript client -->
+  <script type="py" src="./client.py" config="./pyscript.toml" terminal></script>
+</body>
+</html>
