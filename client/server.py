@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Dict, Set, Any
 
-from game_state import ChessGame  # core chess logic
+from client.game_state import ChessGame  # core chess logic
 
 app = FastAPI()
 app.add_middleware(
