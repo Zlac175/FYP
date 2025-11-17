@@ -17,6 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---- Paths ----
+BASE_DIR = Path(__file__).resolve().parent
+TEMPLATE_PATH = BASE_DIR / "templates" / "index.html"
+CLIENT_PY_PATH = BASE_DIR / "client.py"
+PYSCRIPT_TOML_PATH = BASE_DIR / "pyscript.toml"
+
 # ---- Game room storage ----
 # Each room holds a ChessGame instance plus its connected WebSockets.
 Room = Dict[str, Any]
@@ -49,18 +55,18 @@ async def broadcast(room: Room) -> None:
 # ---- Serve frontend files ----
 @app.get("/")
 async def index() -> HTMLResponse:
-    html = Path("templates/index.html").read_text(encoding="utf-8")
+    html = TEMPLATE_PATH.read_text(encoding="utf-8")
     return HTMLResponse(html)
 
 
 @app.get("/client.py")
 async def serve_client_py() -> FileResponse:
-    return FileResponse("client.py")
+    return FileResponse(CLIENT_PY_PATH)
 
 
 @app.get("/pyscript.toml")
 async def serve_pyscript_toml() -> FileResponse:
-    return FileResponse("pyscript.toml")
+    return FileResponse(PYSCRIPT_TOML_PATH)
 
 
 # ---- WebSocket endpoint ----
