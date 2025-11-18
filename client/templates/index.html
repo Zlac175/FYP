@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chess PoC — All Python</title>
   <link
-  rel="stylesheet"
-  href="https://pyscript.net/releases/2025.8.1/core.css"
+    rel="stylesheet"
+    href="https://pyscript.net/releases/2025.8.1/core.css"
   />
   <script
     type="module"
@@ -34,6 +34,10 @@
     .btn:hover { background: #f8fafc; }
     .stack { display:flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .muted { color: #475569; font-size: 14px; }
+    .field-label { font-size: 13px; font-weight: 600; margin-top: 8px; display:block; }
+    .input { width: 100%; padding: 6px 8px; border-radius: 999px; border: 1px solid #cbd5e1; font-size: 14px; box-sizing: border-box; }
+    .input:focus { outline: 2px solid #0ea5e9; outline-offset: 1px; }
+    hr { border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0; }
     @media (max-width: 960px){ .row{ grid-template-columns: 1fr; } .board{ margin: 0 auto; } }
   </style>
 </head>
@@ -46,14 +50,35 @@
         <div id="board" class="board" aria-label="Chess board"></div>
         <div class="stack">
           <button id="flip" class="btn">Flip board</button>
-          <button id="new" class="btn">New game</button>
+          <button id="new" class="btn">New game (reset)</button>
         </div>
         <div id="gameover" class="panel" style="margin-top:12px; display:none;"></div>
       </div>
       <div class="panel">
+        <h2>Game setup</h2>
+
+        <span class="field-label">Host a new game</span>
+        <select id="host-color" class="input">
+          <option value="white">Play as White</option>
+          <option value="black">Play as Black</option>
+          <option value="random">Random colour</option>
+        </select>
+        <button id="host-btn" class="btn" style="margin-top:8px;">Create game &amp; code</button>
+        <div class="muted" style="margin-top:6px;">
+          Game code: <code id="gid">—</code>
+        </div>
+
+        <hr />
+
+        <span class="field-label">Join a game by code</span>
+        <input id="join-code" class="input" placeholder="Enter code from your friend" />
+        <button id="join-btn" class="btn" style="margin-top:8px;">Join game</button>
+
+        <hr />
+
         <h2>Status</h2>
-        <div class="muted">WS: <span id="ws-status">connecting…</span></div>
-        <div class="muted">Game ID: <code id="gid">demo</code></div>
+        <div class="muted">WS: <span id="ws-status">idle</span></div>
+        <div class="muted">You are: <span id="you-are">—</span></div>
         <div class="muted">Turn: <span id="turn">—</span></div>
         <details style="margin-top:12px;">
           <summary>FEN</summary>
